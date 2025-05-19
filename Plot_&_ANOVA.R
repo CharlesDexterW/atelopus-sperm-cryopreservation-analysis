@@ -42,7 +42,7 @@ ggplot(cpa1_summary, aes(x = Time_Lapse, y = mean_motility)) +
   geom_errorbar(aes(ymin = mean_motility - sd_motility,
                     ymax = mean_motility + sd_motility),
                 width = 0.2) +
-  labs(title = "Motility of CPA1",
+  labs(title = "Sperm Motility in CPA1",
        x = "Time Lapse (Minutes)",
        y = "Mean Motility (%)") +
   theme_minimal()
@@ -53,7 +53,7 @@ ggplot(cpa2_summary, aes(x = Time_Lapse, y = mean_motility)) +
   geom_errorbar(aes(ymin = mean_motility - sd_motility,
                     ymax = mean_motility + sd_motility),
                 width = 0.2) +
-  labs(title = "Motility of CPA2",
+  labs(title = "Sperm Motility in CPA2",
        x = "Time Lapse (Minutes)",
        y = "Mean Motility (%)") +
   theme_minimal()
