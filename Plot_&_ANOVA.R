@@ -1,5 +1,5 @@
-## First of
-## To load the needed packages
+##SETUP
+## First of To load the needed packages
 
 library(tidyverse) ## it's only necessary for loading the "readxl" function 
 library(dplyr) ## this one I'll use it for later.
@@ -7,8 +7,6 @@ library(ggplot2) ## needed to plot the graphs
 library(tidyr)
 
 ## ---
-
-## Adding text for git test
 ## first let's load my data. This is real data from the lab I work at in Centro Jambatu. 
 ## It corresponds spermic urine of four different Atelopus longirostris specimens collected by me.
 
