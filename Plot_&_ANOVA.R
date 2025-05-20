@@ -78,4 +78,4 @@ print(summary(anova_cpa2))
 ## tell if there was a problems with the CPA formulations. So, there you go. 
 
 ## My next step if there was significant difference would be to run a Post-Hoc 
-##test to tell wich time lapse yields the most different result. 
+##test to tell wich time lapse yields the most different result.
