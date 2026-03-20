@@ -33,3 +33,23 @@ print(summary(anova_cpa2))
 #   affect motility under CPA1.
 # CPA2: p < 0.05 — reject H0. At least one time lapse differs significantly
 #   from the others under CPA2. Proceed to post-hoc testing.
+
+# ── Tukey HSD post-hoc test — CPA2 ───────────────────────────────────────────
+# Identifies which specific pairs of time lapses drive the significant
+# one-way ANOVA result in CPA2. Applied only to CPA2 since CPA1 showed
+# no significant time effect.
+model_cpa2 <- aov(Motility ~ factor(Time_Lapse), data = cpa2r)
+TukeyHSD(model_cpa2)
+
+# Output columns:
+#   diff  — mean motility difference between the two time points
+#   lwr / upr — 95% confidence interval bounds for the difference
+#   p adj — family-wise error rate-corrected p-value
+#
+# Key findings:
+#   Time 15 vs Time 5  — significant (p adj < 0.05): motility had declined
+#     substantially by minute 15 relative to minute 5.
+#   Time 20 vs Time 5  — significant (p adj < 0.05): further decline by
+#     minute 20, though less pronounced than the 15–5 comparison.
+#   All other pairs (10–5, 15–10, 20–10, 20–15) — not significant,
+#     suggesting motility stabilises after the initial drop at minute 15.
