@@ -75,7 +75,7 @@ Additionally, it'll calculate a statistically appropriate sample size via ANOVA 
 
 ## Visualization & Interpretations
 Based on the results of the Two-way ANOVA test, taking the treatment and time lapse as independent variables, there is no significant overall difference in average motility between CPA1 and CPA2. However, the Time_Lapse significantly impacts motility, meaning motility changes over time regardless of the cryoprotectant. And the pattern of motility change over time is similar for both CPA1 and CPA2. There is no significant interaction, suggesting that, at least with the current sample size, neither CPA1 nor CPA2 is uniquely better or worse at preserving motility over specific time intervals, compared to the other. Both formulations seem to experience similar time-dependent effects on motility.
-So far, there's a significant difference between time lapses in the second treatment. The Tukey test indicates a significant difference in Time 5  in comparison to the Times 15 and 20, during the second treatment. However, these preliminary results come from a sample too small to be considered statistically significant, according to the One-way ANOVA run at the end of the code. 
+So far, there's a significant difference between time lapses in the second treatment. The Tukey test indicates a significant difference in Time 5  in comparison to the Times 15 and 20, during the second treatment. While these results may appear biologically significant, they may come from a sample too small to be considered statistically significant, according to the One-way ANOVA run at the end of the code. For that reason it was recommended to run more assays to sustain the first impressions.  
 
 
 
