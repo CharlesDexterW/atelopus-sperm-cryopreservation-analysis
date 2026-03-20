@@ -140,9 +140,9 @@ print(summary(anova_cpa1))
 print("ANOVA for CPA2:")
 print(summary(anova_cpa2))
 
-## As the Pr value of CPA1 treatment is greater than 0.5, we discard the 
+## As the Pr value of CPA1 treatment is greater than 0.05, we discard the 
 ## alternative hypothesis. On the other hand, the Pr value of CPA2 treatment is 
-## lower than 0.5, so we approve can safely state that there's a significant difference 
+## lower than 0.05, so we approve can safely state that there's a significant difference 
 ## between time lapses. 
 
 ## The next step if there was significant difference is to run a Post-Hoc test to 
