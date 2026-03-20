@@ -53,3 +53,20 @@ TukeyHSD(model_cpa2)
 #     minute 20, though less pronounced than the 15–5 comparison.
 #   All other pairs (10–5, 15–10, 20–10, 20–15) — not significant,
 #     suggesting motility stabilises after the initial drop at minute 15.
+
+# ── Sample size determination ─────────────────────────────────────────────────
+# The current dataset is simulated from a small pilot sample. This power
+# analysis estimates the minimum n per group needed to detect a medium
+# effect with adequate statistical confidence in a future full study.
+#
+# Parameters:
+#   k         = 4   (number of time-lapse groups)
+#   f         = 0.25 (Cohen's f for a medium effect size)
+#   sig.level = 0.05 (alpha)
+#   power     = 0.80 (80% probability of detecting a true effect)
+pwr.anova.test(k = 4, f = 0.25, sig.level = 0.05, power = 0.80)
+
+# Result: approximately 45 observations per group are required.
+# The current pilot sample falls well below this threshold, which is why
+# the two-way ANOVA found no significant treatment effect — the study is
+# underpowered for detecting between-CPA differences at this sample size.
