@@ -5,6 +5,8 @@
 library(tidyverse)
 library(readxl)  # read_xlsx() for .xlsx import
 library(pwr)     # pwr.anova.test() for sample size determination
+library(ggdist)  # install.packages("ggdist")   # first time only
+
 
 # ── Data import ───────────────────────────────────────────────────────────────
 # Range A1:C40 is specified explicitly to suppress warnings from trailing
@@ -32,3 +34,7 @@ cpa2_summary <- cpa2r %>%
   group_by(Time_Lapse) %>%
   summarize(mean_motility = mean(Motility, na.rm = TRUE),
             sd_motility   = sd(Motility,   na.rm = TRUE))
+
+# ── Colour palette ─────────────────────────────────────────────────────
+# consistent across both treatments
+pal <- c("CPA1" = "#2E6F8E", "CPA2" = "#1D6A52")
