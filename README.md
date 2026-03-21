@@ -1,105 +1,132 @@
-# Statistical Analysis: Two-Way ANOVA, One-Way ANOVA, Tukey's Post-Hoc Test, and Sample Size Determination
-## Personal Introduction
-During my undergraduate studies in Biochemistry Engineering, I took a full semester of Experimental Design with an excellent professor from Cuba. His teaching methodology involved thirty straight minutes of writing the theory for each ANOVA method by hand and performing all calculations for each problem the same way. Although I've never had to do it by hand again since we learned how to use SPSS the following semester I still remember my hand and butt used aching during weekends spent transcribing full datasets and analysing them. Anyway, I decided to learn R for creating Markdown files the moment Overleaf couldn't process my research thesis images due to their size. After I completed my thesis, I realized I might as well learn how to perform statistical analysis with R.
+# Sperm Motility Analysis of *Atelopus* sp. under Cryoprotectant Formulations
 
-So here we are.
-During 2025 I've worked at the Research Center of Fundación Jambatu, running cryopreservation experiments with frog sperm. With the explicit permission of Andrea Terán, my supervisor, I used the gathered experimental data to establish the ranges and characteristics of the dataset utilized in this portfolio. The data presented here is a simulated representation of the real findings, created to secure against any potential disclosure of privileged project information.
+Statistical analysis of sperm motility data from *Atelopus* sp. specimens,
+evaluating the effect of two cryoprotectant formulations (CPA1 and CPA2) across
+four post-activation time points. Part of an ongoing amphibian cryopreservation
+research programme at Fundación Jambatu, Ecuador.
 
+> **Data note:** The dataset used here is a simulated representation of pilot
+> experimental findings, produced to protect confidential project information
+> while preserving the statistical characteristics of the original data.
+> Data collection was conducted personally by the author with explicit permission
+> from supervisor Andrea Terán.
 
-## Sperm Motility Analysis of Atelopus sp. with Cryoprotectant Formulations
-### Overview
+---
 
-This R script performs an analysis of sperm motility data collected from _Atelopus sp_ specimens. The primary goal is to evaluate the effect of two different cryoprotectant formulations (CPA1 and CPA2) on sperm viability over various time points. This analysis includes data loading, cleaning, descriptive statistics, visualization through either jittered dot plots or bar plots with error bars, and ANOVA to assess statistical differences between treatments and time lapses.
+## Rendered report
 
-This project is part of ongoing research in amphibian conservation, specifically focusing on the cryopreservation of a specific Atelopus sp sperm, a critically endangered species. The data used in this analysis was personally collected by me in laboratory settings. Due to disclosure agreements with my current employer I won't discuss the two formulations of CPA.
+The full analysis — figures, formatted tables, and interpretations — is available
+as a self-contained HTML document:
 
-### Data Description
-The raw data is stored in an Excel file named **prd.xlsx.** This file contains sperm motility percentages for different time lapses under two distinct cryoprotectant treatments. The data has been pre-processed and tidied in Google Sheets before being imported into R.
+**[View analysis.html](analysis.html)**
 
-**Column Descriptions:**
+---
 
+## Repository structure
 
-**Treatment:** Denotes the cryoprotectant formulation applied (CPA1 or CPA2).
+```
+.
+├── analysis.Rmd          # Source document — prose, code, and output in one file
+├── analysis.html         # Rendered report (knitted from analysis.Rmd)
+├── prd.xlsx              # Simulated motility dataset
+└── Stat_Tests.Rproj      # RStudio project file
+```
 
-**Time_Lapse:** The time point (in minutes) at which sperm motility was measured.
+---
 
-**Motility:** The percentage of motile sperm at a given time and treatment.
+## Dependencies
 
-### Methodology
-I applied a two-way ANOVA to compare the results of CPA1 and CPA2 with Motility as the dependent variable and Treatment and Time_Lapse as the two independent variables.
-Then, I ran a one-way ANOVA for each treatment to know if each time lapse is significantly different for each treatment. 
-After defining which of the two treatments shows any significant differences between time lapses, I ran Tukey's Post-Hoc test to define which time lapse yields the most different result.
-Since this ins a simulated dataset taken from an ongoing project, we would like to take into consideration which sample size would be statistically appropriate for these analysis, which is why I ran a one-way ANOVA to determine it.
+R 4.x and RStudio. Install required packages before knitting:
 
+```r
+install.packages(c("tidyverse", "readxl", "pwr", "ggdist",
+                   "knitr", "kableExtra", "broom"))
+```
 
-**Script Usage**
+| Package | Purpose |
+|---|---|
+| `tidyverse` | Data wrangling (`dplyr`, `tidyr`) and plotting (`ggplot2`) |
+| `readxl` | Import `.xlsx` dataset |
+| `pwr` | Power analysis for sample size determination |
+| `ggdist` | `stat_halfeye()` for raincloud plot half-violins |
+| `knitr` / `kableExtra` | Formatted, captioned tables in the HTML output |
+| `broom` | Converts ANOVA and Tukey objects to tidy data frames |
 
+---
 
-To run this analysis, you will need to have R and RStudio installed on your system. This script was developed and tested on Ubuntu 24.04 LTS.
+## How to run
 
-**Prerequisites**
+1. Clone the repository.
+2. Open `Stat_Tests.Rproj` in RStudio — this sets the working directory
+   correctly so `prd.xlsx` is found automatically.
+3. Open `analysis.Rmd` and click **Knit**, or run from the terminal:
 
+```r
+rmarkdown::render("analysis.Rmd")
+```
 
-Ensure you have the following R packages installed. If not, you can install them using the install.packages() function in R:
+The rendered `analysis.html` will be written to the project folder.
+All code chunks are collapsed by default in the HTML output (`code_folding: hide`)
+— click any **Code** button to inspect the underlying R.
 
-- install.packages("tidyverse")
-  
-- install.packages("ggplot2")
-  
-- install.packages("tidyr")
+---
 
-- library(readxl)
+## Analysis overview
 
-- library(pwr) 
+### Data
 
-**Running the Script**
+39 observations across two treatments and four time lapses. Each row is one
+motility measurement (% motile sperm) for a given treatment and time point.
 
+| Column | Description |
+|---|---|
+| `Treatment` | Cryoprotectant formulation — CPA1 or CPA2 |
+| `Time_Lapse` | Minutes post-activation — 5, 10, 15, or 20 |
+| `Motility` | Percentage of motile sperm |
 
-Place the **prd.xlsx** file in the same directory as the R script.
-Open the R script in RStudio.
-Run the entire script.
+### Visualisation
 
-**The script will:**
+Raincloud plots combine a half-violin (distribution shape), box plot
+(median and IQR), and raw jittered points. This format is recommended for
+small samples where bar plots would hide individual variation and distribution
+shape (Allen et al., 2019; Weissgerber et al., 2015). CPA1 and CPA2 are
+displayed on a shared axis for direct comparison.
 
-Load the necessary libraries.
-Import the prd.xlsx dataset.
-Rename the columns for clarity.
-Create separate dataframes for CPA1 and CPA2 treatments.
-Calculate mean and standard deviation of motility for each time lapse under both treatments.
-Generate two jittered plots visualizing mean sperm motility with standard deviation error bars for CPA1 and CPA2.
-Perform a two-way ANOVA test to determine if there's a significant difference between both treatments.
-Perform an ANOVA test for each treatment to determine if there are significant differences in motility across time lapses.
-Perform a post-hoc test (Tuckey test) to determine if there are significant differences in motility among time lapses. 
-Print the summary results of of each test to the console.
-Additionally, it'll calculate a statistically appropriate sample size via ANOVA for these analysis. 
+### Statistical tests
 
-## Visualization & Interpretations
-Based on the results of the Two-way ANOVA test, taking the treatment and time lapse as independent variables, there is no significant overall difference in average motility between CPA1 and CPA2. However, the Time_Lapse significantly impacts motility, meaning motility changes over time regardless of the cryoprotectant. And the pattern of motility change over time is similar for both CPA1 and CPA2. There is no significant interaction, suggesting that, at least with the current sample size, neither CPA1 nor CPA2 is uniquely better or worse at preserving motility over specific time intervals, compared to the other. Both formulations seem to experience similar time-dependent effects on motility.
-So far, there's a significant difference between time lapses in the second treatment. The Tukey test indicates a significant difference in Time 5  in comparison to the Times 15 and 20, during the second treatment. While these results may appear biologically significant, they may come from a sample too small to be considered statistically significant, according to the One-way ANOVA run at the end of the code. For that reason it was recommended to run more assays to sustain the first impressions.  
+A two-way ANOVA was fitted with Treatment, Time_Lapse, and their interaction
+as fixed factors. One-way ANOVAs were then fitted per treatment to isolate
+time effects within each formulation. Tukey's HSD post-hoc test was applied
+to CPA2, which showed a significant time effect.
 
+### Key findings
 
+- **Treatment effect:** No significant difference in overall mean motility
+  between CPA1 and CPA2 at the current sample size.
+- **Time effect:** Time_Lapse is a significant predictor of motility for both
+  formulations — motility declines over time regardless of cryoprotectant.
+- **CPA2 post-hoc:** Significant motility decline between Time 5 and Time 15,
+  and between Time 5 and Time 20 (Tukey HSD, p adj < 0.05). All other
+  pairwise comparisons were non-significant.
+- **CPA1 post-hoc:** No significant differences between any time lapse pair.
+- **Sample size:** A power analysis (Cohen's f = 0.25, α = 0.05, power = 0.80)
+  indicates approximately 45 observations per group are needed for a
+  confirmatory study. The current pilot falls below this threshold.
 
-<p align="center">
-  <img src="https://github.com/CharlesDexterW/Statistical_Tests/blob/main/CPA1_Jitter_Plor.png?raw=true" width="450" hspace="20">
-  <img src="https://github.com/CharlesDexterW/Statistical_Tests/blob/main/CPA2_Jitter_Plot.png?raw=true" width="450" hspace="20">
-  <span style="font-size: smaller;"><b>Figure 1</b>: Jittered Plots visualizing the effects of Cryoprotective Agent (CPA) 1 (left) and CPA 2 (right), sperm motility percentage on four different time lapses.</span>
-</p> 
+---
 
-<br>
+## References
 
-<br>
+Allen M, Poggiali D, Whitaker K, Marshall TR, Kievit RA (2019). Raincloud plots:
+a multi-platform tool for robust data visualization. *Wellcome Open Research*, 4:63.
+https://doi.org/10.12688/wellcomeopenres.15191.1
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/4d875680-9634-4380-aac2-80de65ac1690" width="450" hspace="20">
-  <img src="https://github.com/user-attachments/assets/bb46f793-30d1-4ee4-89d4-72cff818bebb" width="450" hspace="20">
-  <span style="font-size: smaller;"><b>Figure 2</b>: Bar Plots visualizing the effects of Cryoprotective Agent (CPA) 1 (left) and CPA 2 (right), sperm motility percentage on four different time lapses.</span>
-</p> 
+Weissgerber TL, Milic NM, Winham SJ, Garovic VD (2015). Beyond bar and line
+graphs: time for a new data presentation paradigm. *PLOS Biology*, 13(4):e1002128.
+https://doi.org/10.1371/journal.pbio.1002128
 
-<br>
+---
 
-<br>
+## Author
 
-
-Author
-
-A. Benjamin Garcés C.
+A. Benjamin Garcés Cifuentes · Fundación Jambatu, Ecuador · R 4.x · Ubuntu 24.04 LTS
