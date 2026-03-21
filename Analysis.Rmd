@@ -79,3 +79,30 @@ kable(cpa2_summary,
   kable_styling(bootstrap_options = c("striped", "hover"),
                 full_width = FALSE)
 ```
+## Visualisation
+
+Raincloud plots combine a half-violin (distribution shape), a box plot
+(median and IQR), and the raw jittered data points. This format is
+recommended for small samples because it communicates distribution shape
+and individual variation that bar plots hide (Allen et al., 2019;
+Weissgerber et al., 2015).
+```{r raincloud, fig.cap="Figure 1. Sperm motility across time lapses for CPA1 and CPA2. Half-violins show the distribution; box plots show the median and IQR; points show individual observations."}
+pal <- c("CPA1" = "#2E6F8E", "CPA2" = "#1D6A52")
+
+ggplot(xlr, aes(x = Time_Lapse, y = Motility,
+                fill = Treatment, colour = Treatment)) +
+  stat_halfeye(adjust = 0.5, width = 0.4, justification = -0.3,
+               .width = 0, point_colour = NA, alpha = 0.7) +
+  geom_boxplot(width = 0.15, outlier.shape = NA,
+               alpha = 0.5, colour = "grey30") +
+  geom_jitter(width = 0.05, alpha = 0.6, size = 1.8) +
+  scale_fill_colour_manual(values = pal) +
+  facet_wrap(~ Treatment, ncol = 2) +
+  scale_y_continuous(limits = c(40, 110),
+                     breaks = seq(40, 100, 20)) +
+  labs(x = "Time lapse (minutes)", y = "Motility (%)") +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none",
+        strip.text       = element_text(face = "bold", size = 11),
+        panel.grid.minor = element_blank())
+```
