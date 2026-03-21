@@ -1,12 +1,32 @@
 ---
-title: "Analysis"
+title: "Sperm Motility Analysis of *Atelopus* sp. under Cryoprotectant Formulations"
 author: "Andrés Benjamin Garcés Cifuentes"
-date: "2026-03-21"
-output: html_document
+date: "`r Sys.Date()`"
+output: html_document:
+  toc: true
+    toc_float: true
+    toc_depth: 3
+    theme: flatly
+    fig_caption: true
+    code_folding: hide
 ---
-
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo    = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 8,
+  fig.height = 5
+)
+```
+```{r libraries}
+library(tidyverse)
+library(readxl)
+library(pwr)
+library(ggdist)
+library(knitr)
+library(kableExtra)
 ```
 
 ## R Markdown
