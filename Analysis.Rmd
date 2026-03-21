@@ -88,6 +88,32 @@ and individual variation that bar plots hide (Allen et al., 2019;
 Weissgerber et al., 2015).
 ```{r raincloud, fig.cap="Figure 1. Sperm motility across time lapses for CPA1 and CPA2. Half-violins show the distribution; box plots show the median and IQR; points show individual observations."}
 pal <- c("CPA1" = "#2E6F8E", "CPA2" = "#1D6A52")
+```
+
+## Statistical analysis
+
+### Two-way ANOVA
+A two-way ANOVA was fitted with Treatment and Time_Lapse as fixed factors
+and their interaction term, using Motility as the continuous dependent
+variable. The null hypotheses are: (1) Treatment has no effect on mean
+motility; (2) Time_Lapse has no effect on mean motility; (3) the effect
+of time does not differ between treatments.
+
+```{r two-way-anova}
+anova_two_way <- aov(Motility ~ Treatment * Time_Lapse, data = xlr)
+
+kable(broom::tidy(anova_two_way),
+      digits  = 4,
+      caption = "Table 3. Two-way ANOVA results.") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+Treatment alone did not produce a significant difference in mean motility
+between CPA1 and CPA2. Time_Lapse was significant, indicating motility
+changes over time regardless of cryoprotectant. The non-significant
+interaction term suggests both formulations follow a similar
+time-dependent trajectory.
 
 ggplot(xlr, aes(x = Time_Lapse, y = Motility,
                 fill = Treatment, colour = Treatment)) +
