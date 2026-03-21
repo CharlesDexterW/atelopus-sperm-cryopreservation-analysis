@@ -133,24 +133,6 @@ changes over time regardless of cryoprotectant. The non-significant
 interaction term suggests both formulations follow a similar
 time-dependent trajectory.
 
-ggplot(xlr, aes(x = Time_Lapse, y = Motility,
-                fill = Treatment, colour = Treatment)) +
-  stat_halfeye(adjust = 0.5, width = 0.4, justification = -0.3,
-               .width = 0, point_colour = NA, alpha = 0.7) +
-  geom_boxplot(width = 0.15, outlier.shape = NA,
-               alpha = 0.5, colour = "grey30") +
-  geom_jitter(width = 0.05, alpha = 0.6, size = 1.8) +
-  scale_fill_colour_manual(values = pal) +
-  facet_wrap(~ Treatment, ncol = 2) +
-  scale_y_continuous(limits = c(40, 110),
-                     breaks = seq(40, 100, 20)) +
-  labs(x = "Time lapse (minutes)", y = "Motility (%)") +
-  theme_minimal(base_size = 12) +
-  theme(legend.position = "none",
-        strip.text       = element_text(face = "bold", size = 11),
-        panel.grid.minor = element_blank())
-```
-
 ### One-way ANOVA per treatment
 
 To determine whether motility differs significantly across time lapses
