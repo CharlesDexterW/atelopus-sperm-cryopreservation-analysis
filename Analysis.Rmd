@@ -177,3 +177,38 @@ Significant declines in motility were observed between Time 5 and Time 15,
 and between Time 5 and Time 20 (p adj < 0.05, highlighted above).
 All other pairwise comparisons were non-significant, suggesting motility
 stabilises after the initial drop.
+
+### Sample size determination
+
+The current dataset derives from a pilot sample. A power analysis
+estimates the minimum observations per group required to detect a medium
+effect in a future full study with adequate statistical confidence.
+```{r power-analysis}
+pwr_result <- pwr.anova.test(k         = 4,
+                             f         = 0.25,
+                             sig.level = 0.05,
+                             power     = 0.80)
+pwr_result
+```
+
+With k = 4 groups, Cohen's f = 0.25 (medium effect), α = 0.05, and
+power = 0.80, approximately **`r ceiling(pwr_result$n)` observations per
+group** are required. The current pilot sample falls below this threshold,
+which explains why the two-way ANOVA found no significant treatment
+effect — the study is underpowered for detecting between-CPA differences
+at this sample size.
+
+## Conclusions
+
+- Neither CPA1 nor CPA2 produced a significantly different overall
+  motility outcome relative to the other under the current sample size.
+- Time_Lapse is a significant predictor of motility for both formulations.
+- CPA2 shows a significant drop in motility at minutes 15 and 20 relative
+  to minute 5 (Tukey HSD, p adj < 0.05); CPA1 does not.
+- A minimum of `r ceiling(pwr_result$n)` replicates per time group are
+  recommended for a powered confirmatory study.
+
+## Session information
+```{r session-info}
+sessionInfo()
+```
