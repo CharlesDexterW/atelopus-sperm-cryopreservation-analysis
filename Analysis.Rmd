@@ -97,15 +97,15 @@ ggplot(xlr, aes(x = Time_Lapse, y = Motility,
   geom_boxplot(width = 0.15, outlier.shape = NA,
                alpha = 0.5, colour = "grey30") +
   geom_jitter(width = 0.05, alpha = 0.6, size = 1.8) +
-  scale_fill_colour_manual(values = pal) +
+  scale_fill_manual(values = pal) +
+  scale_colour_manual(values = pal) +
   facet_wrap(~ Treatment, ncol = 2) +
-  scale_y_continuous(limits = c(40, 110),
-                     breaks = seq(40, 100, 20)) +
+  scale_y_continuous(limits = c(40, 110), breaks = seq(40, 100, 20)) +
   labs(x = "Time lapse (minutes)", y = "Motility (%)") +
   theme_minimal(base_size = 12) +
-  theme(legend.position = "none",
-        strip.text       = element_text(face = "bold", size = 11),
-        panel.grid.minor = element_blank())
+  theme(legend.position  = "none",
+        strip.text        = element_text(face = "bold", size = 11),
+        panel.grid.minor  = element_blank())
 ```
 
 ## Statistical analysis
