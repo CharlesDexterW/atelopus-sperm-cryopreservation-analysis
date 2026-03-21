@@ -1,9 +1,10 @@
 ---
-title: "Sperm Motility Analysis of *Atelopus* sp. under Cryoprotectant Formulations"
+title: "Sperm Motility Analysis of <i>Atelopus</i> sp. under Cryoprotectant Formulations"
 author: "Andrés Benjamin Garcés Cifuentes"
 date: "`r Sys.Date()`"
-output: html_document:
-  toc: true
+output: 
+  html_document:
+    toc: true
     toc_float: true
     toc_depth: 3
     theme: flatly
