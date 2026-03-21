@@ -18,7 +18,7 @@ research programme at Fundación Jambatu, Ecuador.
 The full analysis — figures, formatted tables, and interpretations — is available
 as a self-contained HTML document:
 
-**[View analysis.html](analysis.html)**
+**[View analysis.html]((https://charlesdexterw.github.io/BGC/Analysis.html))**
 
 ---
 
