@@ -132,3 +132,48 @@ ggplot(xlr, aes(x = Time_Lapse, y = Motility,
         strip.text       = element_text(face = "bold", size = 11),
         panel.grid.minor = element_blank())
 ```
+
+### One-way ANOVA per treatment
+
+To determine whether motility differs significantly across time lapses
+within each formulation independently, one-way ANOVAs were fitted
+separately for CPA1 and CPA2.
+```{r one-way-anova}
+anova_cpa1 <- aov(Motility ~ factor(Time_Lapse), data = cpa1r)
+anova_cpa2 <- aov(Motility ~ factor(Time_Lapse), data = cpa2r)
+
+kable(broom::tidy(anova_cpa1),
+      digits  = 4,
+      caption = "Table 4. One-way ANOVA — CPA1.") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+
+kable(broom::tidy(anova_cpa2),
+      digits  = 4,
+      caption = "Table 5. One-way ANOVA — CPA2.") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
+```
+
+CPA1 showed no significant time effect (p > 0.05). CPA2 showed a
+significant time effect (p < 0.05), warranting post-hoc testing.
+
+### Tukey HSD post-hoc test — CPA2
+```{r tukey}
+model_cpa2 <- aov(Motility ~ factor(Time_Lapse), data = cpa2r)
+
+tukey_res <- TukeyHSD(model_cpa2)
+
+kable(broom::tidy(tukey_res),
+      digits  = 4,
+      caption = "Table 6. Tukey HSD pairwise comparisons — CPA2.") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE) %>%
+  row_spec(which(broom::tidy(tukey_res)$adj.p.value < 0.05),
+           bold = TRUE, color = "white", background = "#1D6A52")
+```
+
+Significant declines in motility were observed between Time 5 and Time 15,
+and between Time 5 and Time 20 (p adj < 0.05, highlighted above).
+All other pairwise comparisons were non-significant, suggesting motility
+stabilises after the initial drop.
