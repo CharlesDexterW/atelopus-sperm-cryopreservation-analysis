@@ -28,23 +28,54 @@ library(ggdist)
 library(knitr)
 library(kableExtra)
 ```
+## Background
 
-## R Markdown
+This report presents a statistical analysis of sperm motility data collected
+from *Atelopus* sp. specimens at Fundación Jambatu as part of an ongoing
+amphibian cryopreservation research programme. The dataset used here is a
+simulated representation of pilot experimental findings, produced to protect
+confidential project information while preserving the statistical
+characteristics of the original data.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Two cryoprotectant formulations (CPA1 and CPA2) were evaluated across four
+time lapses (5, 10, 15, and 20 minutes post-activation). The primary outcome
+measure is the percentage of motile sperm at each time point.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Data
+```{r load-data}
+xlr <- read_xlsx("prd.xlsx", range = "A1:C40", col_names = FALSE)
+colnames(xlr) <- c("Treatment", "Time_Lapse", "Motility")
 
-```{r cars}
-summary(cars)
+xlr$Time_Lapse <- factor(xlr$Time_Lapse,
+                         levels = c(5, 10, 15, 20))
+
+cpa1r <- xlr %>% filter(Treatment == "CPA1")
+cpa2r <- xlr %>% filter(Treatment == "CPA2")
+
+cpa1_summary <- cpa1r %>%
+  group_by(Time_Lapse) %>%
+  summarize(Mean = mean(Motility, na.rm = TRUE),
+            SD   = sd(Motility,   na.rm = TRUE),
+            N    = n())
+
+cpa2_summary <- cpa2r %>%
+  group_by(Time_Lapse) %>%
+  summarize(Mean = mean(Motility, na.rm = TRUE),
+            SD   = sd(Motility,   na.rm = TRUE),
+            N    = n())
 ```
 
-## Including Plots
+### Descriptive statistics
+```{r summary-tables}
+kable(cpa1_summary,
+      digits  = 2,
+      caption = "Table 1. Mean motility (%) per time lapse — CPA1") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+kable(cpa2_summary,
+      digits  = 2,
+      caption = "Table 2. Mean motility (%) per time lapse — CPA2") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"),
+                full_width = FALSE)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
